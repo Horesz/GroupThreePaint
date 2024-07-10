@@ -8,6 +8,7 @@ namespace GroupThreePaint
         private Graphics drawingGraphics;
         private Tool currentTool = Tool.Pencil;
         private Color currentColor = Color.Black; // Store the current color
+        private int currentBrushSize = 2; // Store the current brush size
 
         public Form1()
         {
@@ -40,6 +41,34 @@ namespace GroupThreePaint
             }
         }
 
+        private void BrushSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            currentBrushSize = int.Parse(brushSizeComboBox.SelectedItem.ToString()); // Update brush size
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|BMP Files|*.bmp";
+            saveFileDialog.DefaultExt = "png";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                drawingBitmap.Save(saveFileDialog.FileName);
+            }
+        }
+
+        private void OpenButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|BMP Files|*.bmp";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (var loadedImage = new Bitmap(openFileDialog.FileName))
+                {
+                    drawingGraphics.DrawImage(loadedImage, 0, 0, drawingPanel.Width, drawingPanel.Height);
+                }
+                drawingPanel.Invalidate();
+            }
+        }
+
         private void DrawingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -55,14 +84,14 @@ namespace GroupThreePaint
             {
                 if (currentTool == Tool.Pencil)
                 {
-                    using (Pen pen = new Pen(currentColor, 2)) // Use the selected color
+                    using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
                     {
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                     }
                 }
                 else if (currentTool == Tool.Eraser)
                 {
-                    using (Pen pen = new Pen(Color.White, 10))
+                    using (Pen pen = new Pen(Color.White, currentBrushSize))
                     {
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                     }
