@@ -14,6 +14,8 @@ namespace GroupThreePaint
         private Stack<Bitmap> undoStack = new Stack<Bitmap>(); // Undo stack
         private Stack<Bitmap> redoStack = new Stack<Bitmap>(); // Redo stack
 
+        private bool isDarkMode = false; // Track the current theme
+
         public Form1()
         {
             InitializeComponent();
@@ -57,13 +59,12 @@ namespace GroupThreePaint
 
         private void BrushSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentBrushSize = int.Parse(brushSizeComboBox.SelectedItem.ToString()); // Update brush size
+            currentBrushSize = int.Parse(brushSizeComboBox.SelectedItem.ToString());
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
             saveFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|BMP Files|*.bmp";
-            saveFileDialog.DefaultExt = "png";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 drawingBitmap.Save(saveFileDialog.FileName);
@@ -180,6 +181,32 @@ namespace GroupThreePaint
                 drawingGraphics = Graphics.FromImage(drawingBitmap);
                 drawingPanel.Invalidate();
             }
+        }
+
+        private void ThemeToggleButton_Click(object sender, EventArgs e)
+        {
+            isDarkMode = !isDarkMode;
+            ApplyTheme();
+        }
+
+        private void ApplyTheme()
+        {
+            if (isDarkMode)
+            {
+                this.BackColor = Color.Black;
+                this.ForeColor = Color.White;
+                toolStrip1.BackColor = Color.Black;
+                toolStrip1.ForeColor = Color.White;
+            }
+            else
+            {
+                this.BackColor = Color.White;
+                this.ForeColor = Color.Black;
+                toolStrip1.ForeColor = Color.Black;
+                isDarkMode = !isDarkMode;
+            }
+
+            drawingPanel.Invalidate();
         }
     }
 }

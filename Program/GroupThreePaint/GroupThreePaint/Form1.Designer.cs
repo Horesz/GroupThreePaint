@@ -16,137 +16,165 @@
         private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
 
-        private System.Windows.Forms.ToolStripButton rectangleButton;
-        private System.Windows.Forms.ToolStripButton ellipseButton;
+        private ToolStripButton rectangleButton;
+        private ToolStripButton ellipseButton;
+
+        private ToolStripButton themeToggleButton;
 
         private void InitializeComponent()
         {
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.pencilButton = new System.Windows.Forms.ToolStripButton();
-            this.eraserButton = new System.Windows.Forms.ToolStripButton();
-            this.colorButton = new System.Windows.Forms.ToolStripButton();
-            this.brushSizeComboBox = new System.Windows.Forms.ToolStripComboBox();
-            this.saveButton = new System.Windows.Forms.ToolStripButton();
-            this.openButton = new System.Windows.Forms.ToolStripButton();
-            this.rectangleButton = new System.Windows.Forms.ToolStripButton(); // Add rectangle button
-            this.ellipseButton = new System.Windows.Forms.ToolStripButton(); // Add ellipse button
-            this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.drawingPanel = new DoubleBufferedPanel();
-            this.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            toolStrip1 = new ToolStrip();
+            pencilButton = new ToolStripButton();
+            eraserButton = new ToolStripButton();
+            colorButton = new ToolStripButton();
+            brushSizeComboBox = new ToolStripComboBox();
+            saveButton = new ToolStripButton();
+            openButton = new ToolStripButton();
+            rectangleButton = new ToolStripButton();
+            ellipseButton = new ToolStripButton();
+            undoButton = new ToolStripButton();
+            redoButton = new ToolStripButton();
+            themeToggleButton = new ToolStripButton();
+            colorDialog = new ColorDialog();
+            saveFileDialog = new SaveFileDialog();
+            openFileDialog = new OpenFileDialog();
+            drawingPanel = new DoubleBufferedPanel();
+            toolStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-        this.pencilButton,
-        this.eraserButton,
-        this.colorButton,
-        this.brushSizeComboBox,
-        this.saveButton,
-        this.openButton,
-        this.rectangleButton, // Add rectangle button to the ToolStrip
-        this.ellipseButton}); // Add ellipse button to the ToolStrip
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            toolStrip1.ImageScalingSize = new Size(28, 28);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(700, 35);
+            toolStrip1.TabIndex = 0;
+            toolStrip1.Text = "toolStrip1";
             // 
             // pencilButton
             // 
-            this.pencilButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.pencilButton.Name = "pencilButton";
-            this.pencilButton.Size = new System.Drawing.Size(50, 24);
-            this.pencilButton.Text = "Pencil";
-            this.pencilButton.Click += new System.EventHandler(this.PencilButton_Click);
+            pencilButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            pencilButton.Image = (Image)resources.GetObject("pencilButton.Image");
+            pencilButton.Name = "pencilButton";
+            pencilButton.Size = new Size(32, 32);
+            pencilButton.Text = "Pencil";
+            pencilButton.Click += PencilButton_Click;
             // 
             // eraserButton
             // 
-            this.eraserButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.eraserButton.Name = "eraserButton";
-            this.eraserButton.Size = new System.Drawing.Size(54, 24);
-            this.eraserButton.Text = "Eraser";
-            this.eraserButton.Click += new System.EventHandler(this.EraserButton_Click);
+            eraserButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            eraserButton.Image = (Image)resources.GetObject("eraserButton.Image");
+            eraserButton.Name = "eraserButton";
+            eraserButton.Size = new Size(32, 32);
+            eraserButton.Text = "Eraser";
+            eraserButton.Click += EraserButton_Click;
             // 
             // colorButton
             // 
-            this.colorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.colorButton.Name = "colorButton";
-            this.colorButton.Size = new System.Drawing.Size(48, 24);
-            this.colorButton.Text = "Color";
-            this.colorButton.Click += new System.EventHandler(this.ColorButton_Click);
+            colorButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            colorButton.Image = (Image)resources.GetObject("colorButton.Image");
+            colorButton.Name = "colorButton";
+            colorButton.Size = new Size(32, 32);
+            colorButton.Text = "Color";
+            colorButton.Click += ColorButton_Click;
             // 
             // brushSizeComboBox
             // 
-            this.brushSizeComboBox.Items.AddRange(new object[] {
-        "2",
-        "4",
-        "6",
-        "8",
-        "10",
-        "12",
-        "14",
-        "16"});
-            this.brushSizeComboBox.Name = "brushSizeComboBox";
-            this.brushSizeComboBox.Size = new System.Drawing.Size(75, 27);
-            this.brushSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.BrushSizeComboBox_SelectedIndexChanged);
-            this.brushSizeComboBox.SelectedIndex = 0; // Set default brush size
-                                                      // 
-                                                      // saveButton
-                                                      // 
-            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(45, 24);
-            this.saveButton.Text = "Save";
-            this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            brushSizeComboBox.Items.AddRange(new object[] { "2", "4", "6", "8", "10", "12", "14", "16" });
+            brushSizeComboBox.Name = "brushSizeComboBox";
+            brushSizeComboBox.Size = new Size(75, 35);
+            brushSizeComboBox.Text = "2";
+            brushSizeComboBox.SelectedIndexChanged += BrushSizeComboBox_SelectedIndexChanged;
+            // 
+            // saveButton
+            // 
+            saveButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            saveButton.Image = (Image)resources.GetObject("saveButton.Image");
+            saveButton.Name = "saveButton";
+            saveButton.Size = new Size(32, 32);
+            saveButton.Text = "Save";
+            saveButton.Click += SaveButton_Click;
             // 
             // openButton
             // 
-            this.openButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.openButton.Name = "openButton";
-            this.openButton.Size = new System.Drawing.Size(51, 24);
-            this.openButton.Text = "Open";
-            this.openButton.Click += new System.EventHandler(this.OpenButton_Click);
+            openButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            openButton.Image = (Image)resources.GetObject("openButton.Image");
+            openButton.Name = "openButton";
+            openButton.Size = new Size(32, 32);
+            openButton.Text = "Open";
+            openButton.Click += OpenButton_Click;
             // 
             // rectangleButton
             // 
-            this.rectangleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.rectangleButton.Name = "rectangleButton";
-            this.rectangleButton.Size = new System.Drawing.Size(77, 24);
-            this.rectangleButton.Text = "Rectangle";
-            this.rectangleButton.Click += new System.EventHandler(this.RectangleButton_Click);
+            rectangleButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            rectangleButton.Image = (Image)resources.GetObject("rectangleButton.Image");
+            rectangleButton.Name = "rectangleButton";
+            rectangleButton.Size = new Size(32, 32);
+            rectangleButton.Text = "Rectangle";
+            rectangleButton.Click += RectangleButton_Click;
             // 
             // ellipseButton
             // 
-            this.ellipseButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ellipseButton.Name = "ellipseButton";
-            this.ellipseButton.Size = new System.Drawing.Size(54, 24);
-            this.ellipseButton.Text = "Ellipse";
-            this.ellipseButton.Click += new System.EventHandler(this.EllipseButton_Click);
+            ellipseButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            ellipseButton.Image = (Image)resources.GetObject("ellipseButton.Image");
+            ellipseButton.Name = "ellipseButton";
+            ellipseButton.Size = new Size(32, 32);
+            ellipseButton.Text = "Ellipse";
+            ellipseButton.Click += EllipseButton_Click;
+            // 
+            // undoButton
+            // 
+            undoButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            undoButton.Image = (Image)resources.GetObject("undoButton.Image");
+            undoButton.Name = "undoButton";
+            undoButton.Size = new Size(32, 32);
+            undoButton.Text = "Undo";
+            undoButton.Click += UndoButton_Click;
+            // 
+            // redoButton
+            // 
+            redoButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            redoButton.Image = (Image)resources.GetObject("redoButton.Image");
+            redoButton.Name = "redoButton";
+            redoButton.Size = new Size(32, 32);
+            redoButton.Text = "Redo";
+            redoButton.Click += RedoButton_Click;
+            // 
+            // themeToggleButton
+            // 
+            themeToggleButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            themeToggleButton.Image = (Image)resources.GetObject("themeToggleButton.Image");
+            themeToggleButton.Name = "themeToggleButton";
+            themeToggleButton.Size = new Size(32, 32);
+            themeToggleButton.Text = "Theme";
+            themeToggleButton.Click += ThemeToggleButton_Click;
             // 
             // drawingPanel
             // 
-            this.drawingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.drawingPanel.Location = new System.Drawing.Point(0, 27);
-            this.drawingPanel.Name = "drawingPanel";
-            this.drawingPanel.Size = new System.Drawing.Size(800, 423);
-            this.drawingPanel.TabIndex = 1;
+            drawingPanel.Dock = DockStyle.Fill;
+            drawingPanel.Location = new Point(0, 35);
+            drawingPanel.Name = "drawingPanel";
+            drawingPanel.Size = new Size(700, 387);
+            drawingPanel.TabIndex = 1;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.drawingPanel);
-            this.Controls.Add(this.toolStrip1);
-            this.Name = "Form1";
-            this.Text = "Simple Paint App";
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1350, 722);
+            Controls.Add(drawingPanel);
+            Controls.Add(toolStrip1);
+            Name = "Form1";
+            Text = "Ingyenes Paint";
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
+        private ToolStripButton undoButton;
+        private ToolStripButton redoButton;
     }
 }
