@@ -8,6 +8,7 @@ namespace GroupThreePaint
 {
     public class DoubleBufferedPanel : Panel
     {
+
         public DoubleBufferedPanel()
         {
             this.DoubleBuffered = true;

@@ -6,6 +6,7 @@ namespace GroupThreePaint
         private Point lastPoint;
         private Bitmap drawingBitmap;
         private Graphics drawingGraphics;
+        private Tool currentTool = Tool.Pencil;
 
         public Form1()
         {
@@ -18,6 +19,16 @@ namespace GroupThreePaint
             drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
             drawingGraphics = Graphics.FromImage(drawingBitmap);
             drawingGraphics.Clear(Color.White);
+        }
+
+        private void PencilButton_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.Pencil;
+        }
+
+        private void EraserButton_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.Eraser;
         }
 
         private void DrawingPanel_MouseDown(object sender, MouseEventArgs e)
@@ -33,12 +44,22 @@ namespace GroupThreePaint
         {
             if (isDrawing)
             {
-                using (Pen pen = new Pen(Color.Black, 2))
+                if (currentTool == Tool.Pencil)
                 {
-                    drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                    using (Pen pen = new Pen(Color.Black, 2))
+                    {
+                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                    }
+                }
+                else if (currentTool == Tool.Eraser)
+                {
+                    using (Pen pen = new Pen(Color.White, 10))
+                    {
+                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                    }
                 }
                 lastPoint = e.Location;
-                drawingPanel.Invalidate(); // Invalidate the panel to trigger a repaint
+                drawingPanel.Invalidate();
             }
         }
 
