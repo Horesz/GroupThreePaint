@@ -7,6 +7,7 @@ namespace GroupThreePaint
         private Bitmap drawingBitmap;
         private Graphics drawingGraphics;
         private Tool currentTool = Tool.Pencil;
+        private Color currentColor = Color.Black; // Store the current color
 
         public Form1()
         {
@@ -31,6 +32,14 @@ namespace GroupThreePaint
             currentTool = Tool.Eraser;
         }
 
+        private void ColorButton_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentColor = colorDialog.Color; // Set the selected color
+            }
+        }
+
         private void DrawingPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -46,7 +55,7 @@ namespace GroupThreePaint
             {
                 if (currentTool == Tool.Pencil)
                 {
-                    using (Pen pen = new Pen(Color.Black, 2))
+                    using (Pen pen = new Pen(currentColor, 2)) // Use the selected color
                     {
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                     }
