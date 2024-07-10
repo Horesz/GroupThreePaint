@@ -9,6 +9,8 @@ namespace GroupThreePaint
     public enum Tool
     {
         Pencil,
-        Eraser
+        Eraser,
+        Rectangle,
+        Ellipse
     }
 }

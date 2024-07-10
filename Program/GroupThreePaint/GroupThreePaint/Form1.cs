@@ -4,11 +4,15 @@ namespace GroupThreePaint
     {
         private bool isDrawing = false;
         private Point lastPoint;
+        private Point startPoint; // For shapes
         private Bitmap drawingBitmap;
         private Graphics drawingGraphics;
         private Tool currentTool = Tool.Pencil;
         private Color currentColor = Color.Black; // Store the current color
         private int currentBrushSize = 2; // Store the current brush size
+
+        private Stack<Bitmap> undoStack = new Stack<Bitmap>(); // Undo stack
+        private Stack<Bitmap> redoStack = new Stack<Bitmap>(); // Redo stack
 
         public Form1()
         {
@@ -31,6 +35,16 @@ namespace GroupThreePaint
         private void EraserButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Eraser;
+        }
+
+        private void RectangleButton_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.Rectangle;
+        }
+
+        private void EllipseButton_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.Ellipse;
         }
 
         private void ColorButton_Click(object sender, EventArgs e)
@@ -61,9 +75,9 @@ namespace GroupThreePaint
             openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|BMP Files|*.bmp";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                using (var loadedImage = new Bitmap(openFileDialog.FileName))
+                using (Bitmap openedBitmap = new Bitmap(openFileDialog.FileName))
                 {
-                    drawingGraphics.DrawImage(loadedImage, 0, 0, drawingPanel.Width, drawingPanel.Height);
+                    drawingGraphics.DrawImage(openedBitmap, Point.Empty);
                 }
                 drawingPanel.Invalidate();
             }
@@ -74,7 +88,10 @@ namespace GroupThreePaint
             if (e.Button == MouseButtons.Left)
             {
                 isDrawing = true;
+                startPoint = e.Location;
                 lastPoint = e.Location;
+                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
+                redoStack.Clear(); // Clear the redo stack
             }
         }
 
@@ -91,7 +108,7 @@ namespace GroupThreePaint
                 }
                 else if (currentTool == Tool.Eraser)
                 {
-                    using (Pen pen = new Pen(Color.White, currentBrushSize))
+                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5)) // Adjust the eraser size
                     {
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                     }
@@ -106,12 +123,63 @@ namespace GroupThreePaint
             if (e.Button == MouseButtons.Left)
             {
                 isDrawing = false;
+
+                if (currentTool == Tool.Rectangle || currentTool == Tool.Ellipse)
+                {
+                    var endPoint = e.Location;
+                    var rect = GetRectangle(startPoint, endPoint);
+
+                    using (Pen pen = new Pen(currentColor, currentBrushSize))
+                    {
+                        if (currentTool == Tool.Rectangle)
+                        {
+                            drawingGraphics.DrawRectangle(pen, rect);
+                        }
+                        else if (currentTool == Tool.Ellipse)
+                        {
+                            drawingGraphics.DrawEllipse(pen, rect);
+                        }
+                    }
+
+                    drawingPanel.Invalidate();
+                }
             }
         }
 
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
+        }
+
+        private Rectangle GetRectangle(Point p1, Point p2)
+        {
+            int x = Math.Min(p1.X, p2.X);
+            int y = Math.Min(p1.Y, p2.Y);
+            int width = Math.Abs(p1.X - p2.X);
+            int height = Math.Abs(p1.Y - p2.Y);
+            return new Rectangle(x, y, width, height);
+        }
+
+        private void UndoButton_Click(object sender, EventArgs e)
+        {
+            if (undoStack.Count > 0)
+            {
+                redoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for redo
+                drawingBitmap = undoStack.Pop(); // Restore the previous state
+                drawingGraphics = Graphics.FromImage(drawingBitmap);
+                drawingPanel.Invalidate();
+            }
+        }
+
+        private void RedoButton_Click(object sender, EventArgs e)
+        {
+            if (redoStack.Count > 0)
+            {
+                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
+                drawingBitmap = redoStack.Pop(); // Restore the redo state
+                drawingGraphics = Graphics.FromImage(drawingBitmap);
+                drawingPanel.Invalidate();
+            }
         }
     }
 }

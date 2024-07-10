@@ -11,10 +11,13 @@
 
         private ToolStripComboBox brushSizeComboBox;
 
-        private System.Windows.Forms.ToolStripButton saveButton;
-        private System.Windows.Forms.ToolStripButton openButton;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private ToolStripButton saveButton;
+        private ToolStripButton openButton;
+        private SaveFileDialog saveFileDialog;
+        private OpenFileDialog openFileDialog;
+
+        private System.Windows.Forms.ToolStripButton rectangleButton;
+        private System.Windows.Forms.ToolStripButton ellipseButton;
 
         private void InitializeComponent()
         {
@@ -23,12 +26,14 @@
             this.eraserButton = new System.Windows.Forms.ToolStripButton();
             this.colorButton = new System.Windows.Forms.ToolStripButton();
             this.brushSizeComboBox = new System.Windows.Forms.ToolStripComboBox();
-            this.saveButton = new System.Windows.Forms.ToolStripButton(); // Add save button
-            this.openButton = new System.Windows.Forms.ToolStripButton(); // Add open button
+            this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.openButton = new System.Windows.Forms.ToolStripButton();
+            this.rectangleButton = new System.Windows.Forms.ToolStripButton(); // Add rectangle button
+            this.ellipseButton = new System.Windows.Forms.ToolStripButton(); // Add ellipse button
             this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog(); // Add save file dialog
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog(); // Add open file dialog
-            this.drawingPanel = new DoubleBufferedPanel(); // Use DoubleBufferedPanel here
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.drawingPanel = new DoubleBufferedPanel();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -38,8 +43,10 @@
         this.eraserButton,
         this.colorButton,
         this.brushSizeComboBox,
-        this.saveButton, // Add save button to the ToolStrip
-        this.openButton}); // Add open button to the ToolStrip
+        this.saveButton,
+        this.openButton,
+        this.rectangleButton, // Add rectangle button to the ToolStrip
+        this.ellipseButton}); // Add ellipse button to the ToolStrip
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 27);
@@ -101,6 +108,22 @@
             this.openButton.Size = new System.Drawing.Size(51, 24);
             this.openButton.Text = "Open";
             this.openButton.Click += new System.EventHandler(this.OpenButton_Click);
+            // 
+            // rectangleButton
+            // 
+            this.rectangleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.rectangleButton.Name = "rectangleButton";
+            this.rectangleButton.Size = new System.Drawing.Size(77, 24);
+            this.rectangleButton.Text = "Rectangle";
+            this.rectangleButton.Click += new System.EventHandler(this.RectangleButton_Click);
+            // 
+            // ellipseButton
+            // 
+            this.ellipseButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ellipseButton.Name = "ellipseButton";
+            this.ellipseButton.Size = new System.Drawing.Size(54, 24);
+            this.ellipseButton.Text = "Ellipse";
+            this.ellipseButton.Click += new System.EventHandler(this.EllipseButton_Click);
             // 
             // drawingPanel
             // 
