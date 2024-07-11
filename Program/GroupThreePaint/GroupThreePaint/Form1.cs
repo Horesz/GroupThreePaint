@@ -35,7 +35,7 @@ namespace GroupThreePaint
             // Redraw the panel
             drawingPanel.Invalidate();
         }
-        public Form1(Size? customSize = null)
+        public Form1(Size? customSize = null, string imagePath = null)
         {
             InitializeComponent();
 
@@ -44,7 +44,6 @@ namespace GroupThreePaint
                 this.Size = customSize.Value;
             }
 
-            // Set the drawing panel to fill the entire form
             drawingPanel.Dock = DockStyle.Fill;
 
             drawingPanel.MouseDown += new MouseEventHandler(DrawingPanel_MouseDown);
@@ -52,11 +51,27 @@ namespace GroupThreePaint
             drawingPanel.MouseUp += new MouseEventHandler(DrawingPanel_MouseUp);
             drawingPanel.Paint += new PaintEventHandler(DrawingPanel_Paint);
 
-            // Create the initial bitmap
-            CreateNewBitmap();
-
-            // Add resize event handler
             this.Resize += new EventHandler(Form1_Resize);
+
+            if (imagePath != null)
+            {
+                OpenImage(imagePath);
+            }
+            else
+            {
+                CreateNewBitmap();
+            }
+        }
+
+        private void OpenImage(string imagePath)
+        {
+            using (Bitmap openedBitmap = new Bitmap(imagePath))
+            {
+                drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
+                drawingGraphics = Graphics.FromImage(drawingBitmap);
+                drawingGraphics.DrawImage(openedBitmap, 0, 0, drawingPanel.Width, drawingPanel.Height);
+            }
+            drawingPanel.Invalidate();
         }
 
         private void CreateNewBitmap()

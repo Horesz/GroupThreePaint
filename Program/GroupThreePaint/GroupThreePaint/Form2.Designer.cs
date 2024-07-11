@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             newBlankPageBTN = new Button();
-            openExistImageBTN = new Button();
             welcomeLabel = new Label();
             pictureBox2 = new PictureBox();
             ExitBTN = new Button();
@@ -40,25 +39,13 @@
             // newBlankPageBTN
             // 
             newBlankPageBTN.BackColor = Color.Transparent;
-            newBlankPageBTN.Location = new Point(12, 302);
+            newBlankPageBTN.Location = new Point(142, 299);
             newBlankPageBTN.Name = "newBlankPageBTN";
             newBlankPageBTN.Size = new Size(129, 33);
             newBlankPageBTN.TabIndex = 0;
             newBlankPageBTN.Text = "Új rajzfelület nyitása";
             newBlankPageBTN.UseVisualStyleBackColor = false;
             newBlankPageBTN.Click += button1_Click;
-            // 
-            // openExistImageBTN
-            // 
-            openExistImageBTN.BackColor = Color.Transparent;
-            openExistImageBTN.ForeColor = Color.Black;
-            openExistImageBTN.Location = new Point(186, 302);
-            openExistImageBTN.Name = "openExistImageBTN";
-            openExistImageBTN.Size = new Size(186, 33);
-            openExistImageBTN.TabIndex = 1;
-            openExistImageBTN.Text = "Meglévő kép megnyitása";
-            openExistImageBTN.UseVisualStyleBackColor = false;
-            openExistImageBTN.Click += button2_Click;
             // 
             // welcomeLabel
             // 
@@ -84,7 +71,7 @@
             // ExitBTN
             // 
             ExitBTN.BackColor = Color.Transparent;
-            ExitBTN.Location = new Point(228, 421);
+            ExitBTN.Location = new Point(177, 421);
             ExitBTN.Name = "ExitBTN";
             ExitBTN.Size = new Size(65, 44);
             ExitBTN.TabIndex = 6;
@@ -99,7 +86,6 @@
             ClientSize = new Size(433, 477);
             Controls.Add(ExitBTN);
             Controls.Add(welcomeLabel);
-            Controls.Add(openExistImageBTN);
             Controls.Add(newBlankPageBTN);
             Controls.Add(pictureBox2);
             Font = new Font("Bahnschrift SemiBold Condensed", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -116,7 +102,6 @@
         #endregion
 
         private Button newBlankPageBTN;
-        private Button openExistImageBTN;
         private Label welcomeLabel;
         private PictureBox pictureBox2;
         private Button ExitBTN;
