@@ -3,7 +3,7 @@
     partial class Form1
     {
         private ToolStrip toolStrip1;
-        private ToolStripButton pencilButton;
+        private ToolStripButton watercolorButton;
         private ToolStripButton eraserButton;
         private DoubleBufferedPanel drawingPanel;
         private ToolStripButton colorButton;
@@ -27,7 +27,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
-            pencilButton = new ToolStripButton();
+            watercolorButton = new ToolStripButton();
             eraserButton = new ToolStripButton();
             colorButton = new ToolStripButton();
             brushSizeComboBox = new ToolStripComboBox();
@@ -39,12 +39,15 @@
             redoButton = new ToolStripButton();
             themeToggleButton = new ToolStripButton();
             clearButton = new ToolStripButton();
+            fillButton = new ToolStripButton();
             colorDialog = new ColorDialog();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
             errorProvider1 = new ErrorProvider(components);
-            fillButton = new ToolStripButton();
+            toolStripButton1 = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
+            toolStripButton3 = new ToolStripButton();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
@@ -52,21 +55,21 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(28, 28);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton, fillButton });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, watercolorButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton, fillButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1350, 35);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
-            // pencilButton
+            // watercolorButton
             // 
-            pencilButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            pencilButton.Image = (Image)resources.GetObject("pencilButton.Image");
-            pencilButton.Name = "pencilButton";
-            pencilButton.Size = new Size(32, 32);
-            pencilButton.Text = "Pencil";
-            pencilButton.Click += PencilButton_Click;
+            watercolorButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            watercolorButton.Image = (Image)resources.GetObject("watercolorButton.Image");
+            watercolorButton.Name = "watercolorButton";
+            watercolorButton.Size = new Size(32, 32);
+            watercolorButton.Text = "Watercolor";
+            watercolorButton.Click += WatercolorButton_Click;
             // 
             // eraserButton
             // 
@@ -166,27 +169,6 @@
             clearButton.Text = "Clear";
             clearButton.Click += ClearButton_Click;
             // 
-            // drawingPanel
-            // 
-            drawingPanel.Dock = DockStyle.Fill;
-            drawingPanel.Location = new Point(0, 35);
-            drawingPanel.Name = "drawingPanel";
-            drawingPanel.Size = new Size(1350, 687);
-            drawingPanel.TabIndex = 1;
-            // 
-            // fillButton
-            // 
-            fillButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            fillButton.Image = (Image)resources.GetObject("fillButton.Image");
-            fillButton.Name = "fillButton";
-            fillButton.Size = new Size(32, 32);
-            fillButton.Text = "Fill";
-            fillButton.Click += FillButton_Click;
-            // 
-            // errorProvider1
-            // 
-            errorProvider1.ContainerControl = this;
-            // 
             // fillButton
             // 
             fillButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -195,6 +177,43 @@
             fillButton.Name = "fillButton";
             fillButton.Size = new Size(32, 32);
             fillButton.Text = "toolStripButton1";
+            fillButton.Click += FillButton_Click;
+            // 
+            // drawingPanel
+            // 
+            drawingPanel.Dock = DockStyle.Fill;
+            drawingPanel.Location = new Point(0, 35);
+            drawingPanel.Name = "drawingPanel";
+            drawingPanel.Size = new Size(1350, 687);
+            drawingPanel.TabIndex = 1;
+            // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(32, 32);
+            toolStripButton1.Text = "Pencil";
+            // 
+            // toolStripButton2
+            // 
+            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(32, 32);
+            toolStripButton2.Text = "Pen";
+            // 
+            // toolStripButton3
+            // 
+            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton3.Image = (Image)resources.GetObject("toolStripButton3.Image");
+            toolStripButton3.Name = "toolStripButton3";
+            toolStripButton3.Size = new Size(32, 32);
+            toolStripButton3.Text = "Spray";
             // 
             // Form1
             // 
@@ -218,5 +237,8 @@
         private ErrorProvider errorProvider1;
         private System.ComponentModel.IContainer components;
         private ToolStripButton fillButton;
+        private ToolStripButton toolStripButton1;
+        private ToolStripButton toolStripButton2;
+        private ToolStripButton toolStripButton3;
     }
 }

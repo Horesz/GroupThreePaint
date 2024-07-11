@@ -14,6 +14,7 @@ namespace GroupThreePaint
         Watercolor,
         Eraser,
         Rectangle,
-        Ellipse
+        Ellipse,
+        Fill
     }
 }
