@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GroupThreePaint")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d79d61143214b516cf1878c6c07f93900a9c8dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("GroupThreePaint")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GroupThreePaint")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

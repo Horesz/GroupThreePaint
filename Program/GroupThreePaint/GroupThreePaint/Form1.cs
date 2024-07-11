@@ -207,7 +207,7 @@ namespace GroupThreePaint
 
         private void ThemeToggleButton_Click(object sender, EventArgs e)
         {
-            isDarkMode = !isDarkMode;
+           
             ApplyTheme();
         }
 
@@ -215,7 +215,6 @@ namespace GroupThreePaint
         {
             if (isDarkMode)
             {
-                this.BackColor = Color.Black;
                 this.ForeColor = Color.White;
                 toolStrip1.BackColor = Color.Black;
                 toolStrip1.ForeColor = Color.White;
