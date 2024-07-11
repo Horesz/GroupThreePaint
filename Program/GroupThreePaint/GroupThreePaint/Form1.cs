@@ -1,21 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace GroupThreePaint
 {
     public partial class Form1 : Form
     {
-
         private bool isDrawing = false;
         private Point lastPoint;
-        private Point startPoint; // For shapes
+        private Point startPoint;
         private Bitmap drawingBitmap;
         private Graphics drawingGraphics;
         private Tool currentTool = Tool.Pencil;
-        private Color currentColor = Color.Black; // Store the current color
-        private int currentBrushSize = 2; // Store the current brush size
+        private Color currentColor = Color.Black;
+        private int currentBrushSize = 2;
 
-        private Stack<Bitmap> undoStack = new Stack<Bitmap>(); // Undo stack
-        private Stack<Bitmap> redoStack = new Stack<Bitmap>(); // Redo stack
+        private Stack<Bitmap> undoStack = new Stack<Bitmap>();
+        private Stack<Bitmap> redoStack = new Stack<Bitmap>();
 
-        private bool isDarkMode = false; // Track the current theme
+        private bool isDarkMode = false;
+
+        private float zoomFactor = 1.0f;
+        private Size originalSize;
 
         private bool eraserSelected = false;
 
@@ -30,6 +37,7 @@ namespace GroupThreePaint
             drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
             drawingGraphics = Graphics.FromImage(drawingBitmap);
             drawingGraphics.Clear(Color.White);
+            drawingPanel.AutoScroll = true;
 
             originalSize = drawingPanel.Size;
             drawingPanel.AutoScroll = true;
@@ -41,6 +49,7 @@ namespace GroupThreePaint
             eraserSelected = false;
             drawingPanel.Invalidate();
         }
+
         private void PenButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Pen;
@@ -94,7 +103,7 @@ namespace GroupThreePaint
         {
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                currentColor = colorDialog.Color; // Set the selected color
+                currentColor = colorDialog.Color;
             }
             eraserSelected = false;
             drawingPanel.Invalidate();
@@ -138,25 +147,30 @@ namespace GroupThreePaint
                 isDrawing = true;
                 startPoint = ScalePoint(e.Location);
                 lastPoint = startPoint;
-                undoStack.Push(new Bitmap(drawingBitmap));
-                redoStack.Clear();
 
                 if (currentTool == Tool.Fill)
                 {
-                    Color targetColor = drawingBitmap.GetPixel(e.Location.X, e.Location.Y);
-                    FloodFill(e.Location, targetColor);
+                    Color targetColor = drawingBitmap.GetPixel(startPoint.X, startPoint.Y);
+                    FloodFill(startPoint, targetColor);
                     isDrawing = false;
-                    drawingPanel.Invalidate();
                 }
+                else
+                {
+                    undoStack.Push(new Bitmap(drawingBitmap));
+                    redoStack.Clear();
+                    DrawAtPoint(startPoint);
+                }
+
+                drawingPanel.Invalidate();
             }
         }
 
-        private Random random = new Random();
         private void DrawingPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDrawing)
             {
                 Point currentPoint = ScalePoint(e.Location);
+<<<<<<< Updated upstream
                 using (Graphics g = Graphics.FromImage(drawingBitmap))
                 {
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -249,6 +263,9 @@ namespace GroupThreePaint
                         }
                     }
                 }
+=======
+                DrawLine(lastPoint, currentPoint);
+>>>>>>> Stashed changes
                 lastPoint = currentPoint;
                 drawingPanel.Invalidate();
             }
@@ -261,32 +278,107 @@ namespace GroupThreePaint
 
         private void DrawingPanel_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (isDrawing)
             {
                 isDrawing = false;
-
-                if (currentTool == Tool.Rectangle || currentTool == Tool.Ellipse)
-                {
-                    Point endPoint = ScalePoint(e.Location);
-                    var rect = GetRectangle(startPoint, endPoint);
-
-                    using (Graphics g = Graphics.FromImage(drawingBitmap))
-                    using (Pen pen = new Pen(currentColor, currentBrushSize))
-                    {
-                        if (currentTool == Tool.Rectangle)
-                        {
-                            g.DrawRectangle(pen, rect);
-                        }
-                        else if (currentTool == Tool.Ellipse)
-                        {
-                            g.DrawEllipse(pen, rect);
-                        }
-                    }
-
-                    drawingPanel.Invalidate();
-                }
+                drawingPanel.Invalidate();
             }
         }
+
+
+        private void DrawAtPoint(Point point)
+        {
+            using (Graphics g = Graphics.FromImage(drawingBitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                if (currentTool == Tool.Pencil || currentTool == Tool.Pen)
+                {
+                    using (SolidBrush brush = new SolidBrush(currentColor))
+                    {
+                        g.FillEllipse(brush, point.X - currentBrushSize / 2, point.Y - currentBrushSize / 2, currentBrushSize, currentBrushSize);
+                    }
+                }
+                else if (currentTool == Tool.Spray)
+                {
+                    int particleCount = 50 + (currentBrushSize * 2); // Increase number of particles based on brush size
+                    int radius = currentBrushSize; // Spray radius based on brush size
+
+                    Random rand = new Random();
+                    for (int i = 0; i < particleCount; i++)
+                    {
+                        int offsetX = rand.Next(-radius, radius);
+                        int offsetY = rand.Next(-radius, radius);
+                        double distance = Math.Sqrt(offsetX * offsetX + offsetY * offsetY);
+                        if (distance <= radius)
+                        {
+                            g.FillEllipse(new SolidBrush(currentColor), point.X + offsetX, point.Y + offsetY, 1, 1);
+                        }
+                    }
+                }
+                else if (currentTool == Tool.Watercolor)
+                {
+                    int size = currentBrushSize * 2;
+                    using (SolidBrush brush = new SolidBrush(Color.FromArgb(64, currentColor))) // Semi-transparent color
+                    {
+                        g.FillEllipse(brush, point.X - size / 2, point.Y - size / 2, size, size);
+                    }
+                }
+                // Add other tool types here as needed
+            }
+        }
+
+
+        private void DrawLine(Point from, Point to)
+        {
+            using (Graphics g = Graphics.FromImage(drawingBitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                if (currentTool == Tool.Pencil || currentTool == Tool.Pen)
+                {
+                    using (Pen pen = new Pen(currentColor, currentBrushSize))
+                    {
+                        g.DrawLine(pen, from, to);
+                    }
+                }
+                else if (currentTool == Tool.Eraser)
+                {
+                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5))
+                    {
+                        g.DrawLine(pen, from, to);
+                    }
+                }
+                else if (currentTool == Tool.Spray)
+                {
+                    // Spray tool: Draw at multiple points along the line
+                    float distance = (float)Math.Sqrt((to.X - from.X) * (to.X - from.X) + (to.Y - from.Y) * (to.Y - from.Y));
+                    float stepX = (to.X - from.X) / distance;
+                    float stepY = (to.Y - from.Y) / distance;
+
+                    for (float i = 0; i < distance; i += currentBrushSize)
+                    {
+                        Point sprayPoint = new Point((int)(from.X + i * stepX), (int)(from.Y + i * stepY));
+                        DrawAtPoint(sprayPoint);
+                    }
+                }
+                else if (currentTool == Tool.Watercolor)
+                {
+                    // Watercolor tool: Draw semi-transparent circles along the line
+                    float distance = (float)Math.Sqrt((to.X - from.X) * (to.X - from.X) + (to.Y - from.Y) * (to.Y - from.Y));
+                    float stepX = (to.X - from.X) / distance;
+                    float stepY = (to.Y - from.Y) / distance;
+
+                    for (float i = 0; i < distance; i += currentBrushSize)
+                    {
+                        Point waterColorPoint = new Point((int)(from.X + i * stepX), (int)(from.Y + i * stepY));
+                        DrawAtPoint(waterColorPoint);
+                    }
+                }
+                // Add other tool types here as needed
+            }
+        }
+
 
         private Point ScalePoint(Point p)
         {
@@ -296,8 +388,11 @@ namespace GroupThreePaint
             );
         }
 
+
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             e.Graphics.TranslateTransform(drawingPanel.AutoScrollPosition.X, drawingPanel.AutoScrollPosition.Y);
             e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
@@ -309,21 +404,12 @@ namespace GroupThreePaint
 
         }
 
-        private Rectangle GetRectangle(Point p1, Point p2)
-        {
-            int x = Math.Min(p1.X, p2.X);
-            int y = Math.Min(p1.Y, p2.Y);
-            int width = Math.Abs(p1.X - p2.X);
-            int height = Math.Abs(p1.Y - p2.Y);
-            return new Rectangle(x, y, width, height);
-        }
-
         private void UndoButton_Click(object sender, EventArgs e)
         {
             if (undoStack.Count > 0)
             {
-                redoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for redo
-                drawingBitmap = undoStack.Pop(); // Restore the previous state
+                redoStack.Push(new Bitmap(drawingBitmap));
+                drawingBitmap = undoStack.Pop();
                 drawingGraphics = Graphics.FromImage(drawingBitmap);
                 drawingPanel.Invalidate();
             }
@@ -333,8 +419,8 @@ namespace GroupThreePaint
         {
             if (redoStack.Count > 0)
             {
-                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
-                drawingBitmap = redoStack.Pop(); // Restore the redo state
+                undoStack.Push(new Bitmap(drawingBitmap));
+                drawingBitmap = redoStack.Pop();
                 drawingGraphics = Graphics.FromImage(drawingBitmap);
                 drawingPanel.Invalidate();
             }
@@ -368,31 +454,54 @@ namespace GroupThreePaint
             drawingPanel.Invalidate();
         }
 
-        private void ClearButton_Click(object sender, EventArgs e) // Add this method
+        private void ClearButton_Click(object sender, EventArgs e)
         {
-            undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
-            redoStack.Clear(); // Clear the redo stack
-            drawingGraphics.Clear(Color.White); // Clear the drawing area
+            undoStack.Push(new Bitmap(drawingBitmap));
+            redoStack.Clear();
+            drawingGraphics.Clear(Color.White);
             drawingPanel.Invalidate();
         }
-
-        private float zoomFactor = 1.0f;
-        private Size originalSize;
 
         private void ZoomComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedZoom = zoomComboBox.SelectedItem.ToString();
-            zoomFactor = float.Parse(selectedZoom.TrimEnd('%')) / 100f;
+            float newZoomFactor = float.Parse(selectedZoom.TrimEnd('%')) / 100f;
+            ZoomAroundCenter(newZoomFactor);
+        }
+
+        private void ZoomAroundCenter(float newZoomFactor)
+        {
+            Point centerPoint = new Point(
+                drawingPanel.Width / 2 - drawingPanel.AutoScrollPosition.X,
+                drawingPanel.Height / 2 - drawingPanel.AutoScrollPosition.Y
+            );
+
+            Point scaledCenterPoint = new Point(
+                (int)(centerPoint.X / zoomFactor),
+                (int)(centerPoint.Y / zoomFactor)
+            );
+
+            zoomFactor = newZoomFactor;
             UpdateDrawingPanelSize();
+
+            Point newCenterPoint = new Point(
+                (int)(scaledCenterPoint.X * zoomFactor),
+                (int)(scaledCenterPoint.Y * zoomFactor)
+            );
+
+            drawingPanel.AutoScrollPosition = new Point(
+                newCenterPoint.X - drawingPanel.Width / 2,
+                newCenterPoint.Y - drawingPanel.Height / 2
+            );
+
             drawingPanel.Invalidate();
         }
 
         private void UpdateDrawingPanelSize()
         {
-            drawingPanel.Size = new Size(
-                (int)(originalSize.Width * zoomFactor),
-                (int)(originalSize.Height * zoomFactor)
-            );
+            int scaledWidth = (int)(drawingBitmap.Width * zoomFactor);
+            int scaledHeight = (int)(drawingBitmap.Height * zoomFactor);
+            drawingPanel.AutoScrollMinSize = new Size(scaledWidth, scaledHeight);
         }
 
         private void FloodFill(Point pt, Color targetColor)
@@ -459,4 +568,6 @@ namespace GroupThreePaint
             }
         }
     }
+
+
 }
