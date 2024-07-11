@@ -52,7 +52,7 @@
             // 
             welcomeLabel.AutoSize = true;
             welcomeLabel.BackColor = Color.Transparent;
-            welcomeLabel.Location = new Point(12, 19);
+            welcomeLabel.Location = new Point(78, 19);
             welcomeLabel.Name = "welcomeLabel";
             welcomeLabel.Size = new Size(99, 23);
             welcomeLabel.TabIndex = 2;
@@ -83,7 +83,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(-1, 210);
+            label1.Location = new Point(8, 209);
             label1.Name = "label1";
             label1.Size = new Size(46, 23);
             label1.TabIndex = 7;

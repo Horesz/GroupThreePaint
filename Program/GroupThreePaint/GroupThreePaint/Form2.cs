@@ -16,7 +16,7 @@ namespace GroupThreePaint
         {
             InitializeComponent();
             welcomeLabel.Text = "Üdvözöllek a Jólvanazúgy Bt. Rajzolós Software-ében!";
-            label1.Text = " Készítették: Huber Evelin, Sándor Dániel,Márton Gergely, Sinka Barnabás";
+            label1.Text = "Huber Evelin,Sándor Dániel, Márton Gergely, Sinka Barnabás, Huszár Félix";
             this.StartPosition = FormStartPosition.Manual;
 
             // Center the form on the primary screen
