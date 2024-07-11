@@ -1,0 +1,86 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\groupthreepaint\\doublebufferedpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|solutionrelative:groupthreepaint\\doublebufferedpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|d:\\git\\3\\groupthreepaint\\program\\groupthreepaint\\groupthreepaint\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|solutionrelative:groupthreepaint\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\groupthreepaint\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|solutionrelative:groupthreepaint\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\groupthreepaint\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E829710-4800-4017-AA81-48D61B50B5DD}|GroupThreePaint\\GroupThreePaint.csproj|solutionrelative:groupthreepaint\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.cs",
+              "RelativeDocumentMoniker": "GroupThreePaint\\Form1.cs",
+              "ToolTip": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.cs [Design]",
+              "RelativeToolTip": "GroupThreePaint\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-11T07:36:01.583Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.cs",
+              "RelativeDocumentMoniker": "GroupThreePaint\\Form1.cs",
+              "ToolTip": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.cs",
+              "RelativeToolTip": "GroupThreePaint\\Form1.cs",
+              "ViewState": "AQIAALQAAAAAAAAAAAAAANkAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-07-11T07:36:01.711Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DoubleBufferedPanel.cs",
+              "DocumentMoniker": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\DoubleBufferedPanel.cs",
+              "RelativeDocumentMoniker": "GroupThreePaint\\DoubleBufferedPanel.cs",
+              "ToolTip": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\DoubleBufferedPanel.cs",
+              "RelativeToolTip": "GroupThreePaint\\DoubleBufferedPanel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-11T07:36:01.715Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "GroupThreePaint\\Form1.Designer.cs",
+              "ToolTip": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\Form1.Designer.cs",
+              "RelativeToolTip": "GroupThreePaint\\Form1.Designer.cs",
+              "ViewState": "AQIAAJIAAAAAAAAAAAAswL8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-11T07:36:01.716Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
