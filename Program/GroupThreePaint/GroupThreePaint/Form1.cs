@@ -113,9 +113,9 @@ namespace GroupThreePaint
             {
                 isDrawing = true;
                 startPoint = ScalePoint(e.Location);
-                lastPoint = startPoint;
-                undoStack.Push(new Bitmap(drawingBitmap));
-                redoStack.Clear();
+                lastPoint = e.Location;
+                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
+                redoStack.Clear(); // Clear the redo stack
 
                 if (currentTool == Tool.Fill)
                 {
@@ -132,15 +132,12 @@ namespace GroupThreePaint
         {
             if (isDrawing)
             {
-                Point currentPoint = ScalePoint(e.Location);
                 if (currentTool == Tool.Pencil)
-                    if (currentTool == Tool.Pencil)
                 {
-                        using (Graphics g = Graphics.FromImage(drawingBitmap))
-                        using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
+                    using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
                     {
-                            g.DrawLine(pen, lastPoint, currentPoint);
-                        }
+                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                    }
                 }
                 else if (currentTool == Tool.Pen)
                 {
@@ -203,15 +200,14 @@ namespace GroupThreePaint
                         }
                     }
                 }
-                    else if (currentTool == Tool.Eraser)
+                else if (currentTool == Tool.Eraser)
+                {
+                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5)) // Adjust the eraser size
                     {
-                        using (Graphics g = Graphics.FromImage(drawingBitmap))
-                        using (Pen pen = new Pen(Color.White, currentBrushSize * 5))
-                        {
-                            g.DrawLine(pen, lastPoint, currentPoint);
-                        }
+                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                     }
-                lastPoint = currentPoint;
+                }
+                lastPoint = e.Location;
                 drawingPanel.Invalidate();
             }
         }
@@ -224,19 +220,18 @@ namespace GroupThreePaint
 
                 if (currentTool == Tool.Rectangle || currentTool == Tool.Ellipse)
                 {
-                    Point endPoint = ScalePoint(e.Location);
+                    var endPoint = e.Location;
                     var rect = GetRectangle(startPoint, endPoint);
 
-                    using (Graphics g = Graphics.FromImage(drawingBitmap))
                     using (Pen pen = new Pen(currentColor, currentBrushSize))
                     {
                         if (currentTool == Tool.Rectangle)
                         {
-                            g.DrawRectangle(pen, rect);
+                            drawingGraphics.DrawRectangle(pen, rect);
                         }
                         else if (currentTool == Tool.Ellipse)
                         {
-                            g.DrawEllipse(pen, rect);
+                            drawingGraphics.DrawEllipse(pen, rect);
                         }
                     }
 
@@ -247,15 +242,11 @@ namespace GroupThreePaint
 
         private Point ScalePoint(Point p)
         {
-            return new Point(
-                (int)((p.X - drawingPanel.AutoScrollPosition.X) / zoomFactor),
-                (int)((p.Y - drawingPanel.AutoScrollPosition.Y) / zoomFactor)
-            );
+            return new Point((int)(p.X / zoomFactor), (int)(p.Y / zoomFactor));
         }
 
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.TranslateTransform(drawingPanel.AutoScrollPosition.X, drawingPanel.AutoScrollPosition.Y);
             e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
         }
