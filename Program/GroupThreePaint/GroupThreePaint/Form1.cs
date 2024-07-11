@@ -23,10 +23,13 @@ namespace GroupThreePaint
             drawingPanel.MouseMove += new MouseEventHandler(DrawingPanel_MouseMove);
             drawingPanel.MouseUp += new MouseEventHandler(DrawingPanel_MouseUp);
             drawingPanel.Paint += new PaintEventHandler(DrawingPanel_Paint);
+            originalSize = drawingPanel.Size;
+            drawingPanel.AutoScroll = true;
 
             drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
             drawingGraphics = Graphics.FromImage(drawingBitmap);
             drawingGraphics.Clear(Color.White);
+            drawingPanel.AutoScroll = true;
         }
 
         private void PencilButton_Click(object sender, EventArgs e)
@@ -89,10 +92,10 @@ namespace GroupThreePaint
             if (e.Button == MouseButtons.Left)
             {
                 isDrawing = true;
-                startPoint = e.Location;
-                lastPoint = e.Location;
-                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
-                redoStack.Clear(); // Clear the redo stack
+                startPoint = ScalePoint(e.Location);
+                lastPoint = startPoint;
+                undoStack.Push(new Bitmap(drawingBitmap));
+                redoStack.Clear();
             }
         }
 
@@ -100,21 +103,24 @@ namespace GroupThreePaint
         {
             if (isDrawing)
             {
+                Point currentPoint = ScalePoint(e.Location);
                 if (currentTool == Tool.Pencil)
                 {
-                    using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
+                    using (Graphics g = Graphics.FromImage(drawingBitmap))
+                    using (Pen pen = new Pen(currentColor, currentBrushSize))
                     {
-                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                        g.DrawLine(pen, lastPoint, currentPoint);
                     }
                 }
                 else if (currentTool == Tool.Eraser)
                 {
-                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5)) // Adjust the eraser size
+                    using (Graphics g = Graphics.FromImage(drawingBitmap))
+                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5))
                     {
-                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                        g.DrawLine(pen, lastPoint, currentPoint);
                     }
                 }
-                lastPoint = e.Location;
+                lastPoint = currentPoint;
                 drawingPanel.Invalidate();
             }
         }
@@ -127,18 +133,19 @@ namespace GroupThreePaint
 
                 if (currentTool == Tool.Rectangle || currentTool == Tool.Ellipse)
                 {
-                    var endPoint = e.Location;
+                    Point endPoint = ScalePoint(e.Location);
                     var rect = GetRectangle(startPoint, endPoint);
 
+                    using (Graphics g = Graphics.FromImage(drawingBitmap))
                     using (Pen pen = new Pen(currentColor, currentBrushSize))
                     {
                         if (currentTool == Tool.Rectangle)
                         {
-                            drawingGraphics.DrawRectangle(pen, rect);
+                            g.DrawRectangle(pen, rect);
                         }
                         else if (currentTool == Tool.Ellipse)
                         {
-                            drawingGraphics.DrawEllipse(pen, rect);
+                            g.DrawEllipse(pen, rect);
                         }
                     }
 
@@ -149,6 +156,8 @@ namespace GroupThreePaint
 
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.TranslateTransform(drawingPanel.AutoScrollPosition.X, drawingPanel.AutoScrollPosition.Y);
+            e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
         }
 
@@ -206,6 +215,35 @@ namespace GroupThreePaint
                 isDarkMode = !isDarkMode;
             }
 
+            drawingPanel.Invalidate();
+        }
+
+        private float zoomFactor = 1.0f;
+        private Size originalSize;
+
+        private void ZoomComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedZoom = zoomComboBox.SelectedItem.ToString();
+            zoomFactor = float.Parse(selectedZoom.TrimEnd('%')) / 100f;
+            UpdateDrawingPanelSize();
+            drawingPanel.Invalidate();
+        }
+
+        private Point ScalePoint(Point p)
+        {
+            return new Point(
+                (int)((p.X - drawingPanel.AutoScrollPosition.X) / zoomFactor),
+                (int)((p.Y - drawingPanel.AutoScrollPosition.Y) / zoomFactor)
+            );
+        }
+
+
+        private void UpdateDrawingPanelSize()
+        {
+            drawingPanel.AutoScrollMinSize = new Size(
+                (int)(drawingBitmap.Width * zoomFactor),
+                (int)(drawingBitmap.Height * zoomFactor)
+            );
             drawingPanel.Invalidate();
         }
 
