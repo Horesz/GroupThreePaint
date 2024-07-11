@@ -37,21 +37,22 @@
             undoButton = new ToolStripButton();
             redoButton = new ToolStripButton();
             themeToggleButton = new ToolStripButton();
-            clearButton = new ToolStripButton(); // Add this line
+            clearButton = new ToolStripButton();
             colorDialog = new ColorDialog();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
+            fillButton = new ToolStripButton();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(28, 28);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton }); // Add clearButton here
+            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton, fillButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(700, 35);
+            toolStrip1.Size = new Size(1350, 35);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -167,8 +168,17 @@
             drawingPanel.Dock = DockStyle.Fill;
             drawingPanel.Location = new Point(0, 35);
             drawingPanel.Name = "drawingPanel";
-            drawingPanel.Size = new Size(700, 387);
+            drawingPanel.Size = new Size(1350, 687);
             drawingPanel.TabIndex = 1;
+            // 
+            // fillButton
+            // 
+            fillButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            fillButton.Image = (Image)resources.GetObject("fillButton.Image");
+            fillButton.Name = "fillButton";
+            fillButton.Size = new Size(32, 32);
+            fillButton.Text = "Fill";
+            fillButton.Click += FillButton_Click;
             // 
             // Form1
             // 
@@ -187,5 +197,6 @@
 
         private ToolStripButton undoButton;
         private ToolStripButton redoButton;
+        private ToolStripButton fillButton;
     }
 }
