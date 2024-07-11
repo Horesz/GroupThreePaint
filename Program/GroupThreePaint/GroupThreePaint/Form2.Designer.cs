@@ -102,6 +102,7 @@
             Controls.Add(pictureBox2);
             Font = new Font("Bahnschrift SemiBold Condensed", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 5, 3, 5);
             Name = "Form2";
             SizeGripStyle = SizeGripStyle.Hide;

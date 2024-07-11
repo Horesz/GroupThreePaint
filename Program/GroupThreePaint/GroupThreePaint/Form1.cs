@@ -28,6 +28,9 @@ namespace GroupThreePaint
             drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
             drawingGraphics = Graphics.FromImage(drawingBitmap);
             drawingGraphics.Clear(Color.White);
+
+            originalSize = drawingPanel.Size;
+            drawingPanel.AutoScroll = true;
         }
 
         private void PencilButton_Click(object sender, EventArgs e)
@@ -109,7 +112,7 @@ namespace GroupThreePaint
             if (e.Button == MouseButtons.Left)
             {
                 isDrawing = true;
-                startPoint = e.Location;
+                startPoint = ScalePoint(e.Location);
                 lastPoint = e.Location;
                 undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
                 redoStack.Clear(); // Clear the redo stack
@@ -237,8 +240,14 @@ namespace GroupThreePaint
             }
         }
 
+        private Point ScalePoint(Point p)
+        {
+            return new Point((int)(p.X / zoomFactor), (int)(p.Y / zoomFactor));
+        }
+
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
         }
 
@@ -304,6 +313,25 @@ namespace GroupThreePaint
             redoStack.Clear(); // Clear the redo stack
             drawingGraphics.Clear(Color.White); // Clear the drawing area
             drawingPanel.Invalidate();
+        }
+
+        private float zoomFactor = 1.0f;
+        private Size originalSize;
+
+        private void ZoomComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedZoom = zoomComboBox.SelectedItem.ToString();
+            zoomFactor = float.Parse(selectedZoom.TrimEnd('%')) / 100f;
+            UpdateDrawingPanelSize();
+            drawingPanel.Invalidate();
+        }
+
+        private void UpdateDrawingPanelSize()
+        {
+            drawingPanel.Size = new Size(
+                (int)(originalSize.Width * zoomFactor),
+                (int)(originalSize.Height * zoomFactor)
+            );
         }
 
         private void FloodFill(Point pt, Color targetColor)

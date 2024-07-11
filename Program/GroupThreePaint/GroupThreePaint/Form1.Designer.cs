@@ -16,11 +16,10 @@
         private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
 
-        private ToolStripButton rectangleButton;
-        private ToolStripButton ellipseButton;
-
         private ToolStripButton themeToggleButton;
-        private ToolStripButton clearButton; // Add this line
+        private ToolStripButton clearButton;
+        private ToolStripComboBox zoomComboBox;
+
 
         private void InitializeComponent()
         {
@@ -31,23 +30,29 @@
             toolStripButton2 = new ToolStripButton();
             toolStripButton3 = new ToolStripButton();
             watercolorButton = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
             eraserButton = new ToolStripButton();
             colorButton = new ToolStripButton();
             brushSizeComboBox = new ToolStripComboBox();
+            toolStripSeparator2 = new ToolStripSeparator();
             saveButton = new ToolStripButton();
             openButton = new ToolStripButton();
-            rectangleButton = new ToolStripButton();
-            ellipseButton = new ToolStripButton();
+            rectangleButton = new ToolStripSplitButton();
+            téglalapToolStripMenuItem = new ToolStripMenuItem();
+            körToolStripMenuItem = new ToolStripMenuItem();
+            ellipseButton = new ToolStripSeparator();
             undoButton = new ToolStripButton();
             redoButton = new ToolStripButton();
             themeToggleButton = new ToolStripButton();
             clearButton = new ToolStripButton();
             fillButton = new ToolStripButton();
+            zoomComboBox = new ToolStripComboBox();
             colorDialog = new ColorDialog();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
             errorProvider1 = new ErrorProvider(components);
+            toolStripSeparator3 = new ToolStripSeparator();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
@@ -55,7 +60,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(28, 28);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, watercolorButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton, fillButton });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { saveButton, openButton, toolStripSeparator2, toolStripButton1, toolStripButton2, toolStripButton3, watercolorButton, brushSizeComboBox, colorButton, eraserButton, toolStripSeparator1, rectangleButton, ellipseButton, undoButton, redoButton, toolStripSeparator3, themeToggleButton, clearButton, fillButton, zoomComboBox });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1350, 35);
@@ -98,6 +103,11 @@
             watercolorButton.Text = "Watercolor";
             watercolorButton.Click += WatercolorButton_Click;
             // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 35);
+            // 
             // eraserButton
             // 
             eraserButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -124,6 +134,11 @@
             brushSizeComboBox.Text = "2";
             brushSizeComboBox.SelectedIndexChanged += BrushSizeComboBox_SelectedIndexChanged;
             // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 35);
+            // 
             // saveButton
             // 
             saveButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -145,20 +160,32 @@
             // rectangleButton
             // 
             rectangleButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            rectangleButton.DropDownItems.AddRange(new ToolStripItem[] { téglalapToolStripMenuItem, körToolStripMenuItem });
             rectangleButton.Image = (Image)resources.GetObject("rectangleButton.Image");
             rectangleButton.Name = "rectangleButton";
-            rectangleButton.Size = new Size(32, 32);
+            rectangleButton.Size = new Size(44, 32);
             rectangleButton.Text = "Rectangle";
-            rectangleButton.Click += RectangleButton_Click;
+            // 
+            // téglalapToolStripMenuItem
+            // 
+            téglalapToolStripMenuItem.Image = (Image)resources.GetObject("téglalapToolStripMenuItem.Image");
+            téglalapToolStripMenuItem.Name = "téglalapToolStripMenuItem";
+            téglalapToolStripMenuItem.Size = new Size(117, 22);
+            téglalapToolStripMenuItem.Text = "Téglalap";
+            téglalapToolStripMenuItem.Click += RectangleButton_Click;
+            // 
+            // körToolStripMenuItem
+            // 
+            körToolStripMenuItem.Image = (Image)resources.GetObject("körToolStripMenuItem.Image");
+            körToolStripMenuItem.Name = "körToolStripMenuItem";
+            körToolStripMenuItem.Size = new Size(117, 22);
+            körToolStripMenuItem.Text = "Kör";
+            körToolStripMenuItem.Click += EllipseButton_Click;
             // 
             // ellipseButton
             // 
-            ellipseButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            ellipseButton.Image = (Image)resources.GetObject("ellipseButton.Image");
             ellipseButton.Name = "ellipseButton";
-            ellipseButton.Size = new Size(32, 32);
-            ellipseButton.Text = "Ellipse";
-            ellipseButton.Click += EllipseButton_Click;
+            ellipseButton.Size = new Size(6, 35);
             // 
             // undoButton
             // 
@@ -206,6 +233,14 @@
             fillButton.Text = "toolStripButton1";
             fillButton.Click += FillButton_Click;
             // 
+            // zoomComboBox
+            // 
+            zoomComboBox.Items.AddRange(new object[] { "50%", "100%", "150%", "200%", "300%" });
+            zoomComboBox.Name = "zoomComboBox";
+            zoomComboBox.Size = new Size(75, 35);
+            zoomComboBox.Text = "100%";
+            zoomComboBox.SelectedIndexChanged += ZoomComboBox_SelectedIndexChanged;
+            // 
             // drawingPanel
             // 
             drawingPanel.Dock = DockStyle.Fill;
@@ -217,6 +252,11 @@
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 35);
             // 
             // Form1
             // 
@@ -243,5 +283,12 @@
         private ToolStripButton toolStripButton1;
         private ToolStripButton toolStripButton2;
         private ToolStripButton toolStripButton3;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSplitButton rectangleButton;
+        private ToolStripMenuItem téglalapToolStripMenuItem;
+        private ToolStripMenuItem körToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripSeparator ellipseButton;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }
