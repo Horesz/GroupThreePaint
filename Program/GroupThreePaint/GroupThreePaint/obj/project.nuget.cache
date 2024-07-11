@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "q1CYRXLdg/7zsylxLuOYKwrm873bU2tNBlYg/V5zMJ82I3FfOu5YWmPwmS8gA7Al1vbTKn6rmhqmP7W7p0eadw==",
+  "dgSpecHash": "oG8gisrSJu5xOlUUuJsuWbASQtaDC74hnVuUstIuvk/qjXerYxsz/3JRX9Jf8pNtO/sqSWvPC1eNRj3PSPCPeA==",
   "success": true,
-  "projectFilePath": "D:\\Git\\3\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\MG\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.28\\microsoft.windowsdesktop.app.ref.6.0.28.nupkg.sha512",
-    "C:\\Users\\MG\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.28\\microsoft.netcore.app.ref.6.0.28.nupkg.sha512",
-    "C:\\Users\\MG\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.28\\microsoft.aspnetcore.app.ref.6.0.28.nupkg.sha512",
-    "C:\\Users\\MG\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.28\\microsoft.netcore.app.host.win-x64.6.0.28.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

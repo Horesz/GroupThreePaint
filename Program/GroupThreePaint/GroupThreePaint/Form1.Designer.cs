@@ -24,6 +24,7 @@
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
             pencilButton = new ToolStripButton();
@@ -42,8 +43,10 @@
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
+            errorProvider1 = new ErrorProvider(components);
             fillButton = new ToolStripButton();
             toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // toolStrip1
@@ -180,6 +183,19 @@
             fillButton.Text = "Fill";
             fillButton.Click += FillButton_Click;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
+            // fillButton
+            // 
+            fillButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            fillButton.Image = (Image)resources.GetObject("fillButton.Image");
+            fillButton.ImageTransparentColor = Color.Magenta;
+            fillButton.Name = "fillButton";
+            fillButton.Size = new Size(32, 32);
+            fillButton.Text = "toolStripButton1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -187,16 +203,20 @@
             ClientSize = new Size(1350, 722);
             Controls.Add(drawingPanel);
             Controls.Add(toolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Ingyenes Paint";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         private ToolStripButton undoButton;
         private ToolStripButton redoButton;
+        private ErrorProvider errorProvider1;
+        private System.ComponentModel.IContainer components;
         private ToolStripButton fillButton;
     }
 }
