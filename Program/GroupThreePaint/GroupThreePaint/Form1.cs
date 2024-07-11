@@ -17,6 +17,8 @@ namespace GroupThreePaint
 
         private bool isDarkMode = false; // Track the current theme
 
+        private bool eraserSelected = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -36,25 +38,35 @@ namespace GroupThreePaint
         private void PencilButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Pencil;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
         private void PenButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Pen;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void SprayButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Spray;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void WatercolorButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Watercolor;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void EraserButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Eraser;
+            eraserSelected = true;
+            drawingPanel.Invalidate();
         }
 
         private void RectangleButton_Click(object sender, EventArgs e)
@@ -219,13 +231,18 @@ namespace GroupThreePaint
                     }
                     else if (currentTool == Tool.Eraser)
                     {
-                        using (Pen pen = new Pen(Color.White, currentBrushSize * 5))
+                        using (Pen pen = new Pen(Color.White, Math.Max(currentBrushSize*5, 5)))
                         {
                             g.DrawLine(pen, lastPoint, currentPoint);
                         }
                     }
                 }
                 lastPoint = currentPoint;
+                drawingPanel.Invalidate();
+            }
+
+            if (eraserSelected)
+            {
                 drawingPanel.Invalidate();
             }
         }
@@ -272,6 +289,12 @@ namespace GroupThreePaint
             e.Graphics.TranslateTransform(drawingPanel.AutoScrollPosition.X, drawingPanel.AutoScrollPosition.Y);
             e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
+
+            if (eraserSelected)
+            {
+                DrawEraserOutline(e.Graphics);
+            }
+
         }
 
         private Rectangle GetRectangle(Point p1, Point p2)
@@ -409,6 +432,18 @@ namespace GroupThreePaint
 
                     y1++;
                 }
+            }
+        }
+        private void DrawEraserOutline(Graphics g)
+        {
+            Point mousePosition = drawingPanel.PointToClient(Cursor.Position);
+            Point scaledPosition = ScalePoint(mousePosition);
+            int eraserSize = Math.Max(currentBrushSize*5, 5);
+
+            using (Pen outlinePen = new Pen(Color.Black, 1))
+            {
+                outlinePen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                g.DrawEllipse(outlinePen, scaledPosition.X - eraserSize / 2, scaledPosition.Y - eraserSize / 2, eraserSize, eraserSize);
             }
         }
     }
