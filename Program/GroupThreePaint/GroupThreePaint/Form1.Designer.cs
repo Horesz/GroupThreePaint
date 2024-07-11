@@ -20,6 +20,7 @@
         private ToolStripButton ellipseButton;
 
         private ToolStripButton themeToggleButton;
+        private ToolStripButton clearButton; // Add this line
 
         private void InitializeComponent()
         {
@@ -36,6 +37,7 @@
             undoButton = new ToolStripButton();
             redoButton = new ToolStripButton();
             themeToggleButton = new ToolStripButton();
+            clearButton = new ToolStripButton(); // Add this line
             colorDialog = new ColorDialog();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
@@ -46,7 +48,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(28, 28);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { pencilButton, eraserButton, colorButton, brushSizeComboBox, saveButton, openButton, rectangleButton, ellipseButton, undoButton, redoButton, themeToggleButton, clearButton }); // Add clearButton here
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(700, 35);
@@ -150,6 +152,15 @@
             themeToggleButton.Size = new Size(32, 32);
             themeToggleButton.Text = "Theme";
             themeToggleButton.Click += ThemeToggleButton_Click;
+            // 
+            // clearButton
+            // 
+            clearButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            clearButton.Image = (Image)resources.GetObject("clearButton.Image");
+            clearButton.Name = "clearButton";
+            clearButton.Size = new Size(32, 32);
+            clearButton.Text = "Clear";
+            clearButton.Click += ClearButton_Click;
             // 
             // drawingPanel
             // 

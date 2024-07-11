@@ -208,5 +208,13 @@ namespace GroupThreePaint
 
             drawingPanel.Invalidate();
         }
+
+        private void ClearButton_Click(object sender, EventArgs e) // Add this method
+        {
+            undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
+            redoStack.Clear(); // Clear the redo stack
+            drawingGraphics.Clear(Color.White); // Clear the drawing area
+            drawingPanel.Invalidate();
+        }
     }
 }
