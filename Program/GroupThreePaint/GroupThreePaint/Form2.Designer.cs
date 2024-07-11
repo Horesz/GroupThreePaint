@@ -33,6 +33,7 @@
             welcomeLabel = new Label();
             pictureBox2 = new PictureBox();
             ExitBTN = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             // 
             welcomeLabel.AutoSize = true;
             welcomeLabel.BackColor = Color.Transparent;
-            welcomeLabel.Location = new Point(29, 91);
+            welcomeLabel.Location = new Point(32, 78);
             welcomeLabel.Name = "welcomeLabel";
             welcomeLabel.Size = new Size(99, 23);
             welcomeLabel.TabIndex = 2;
@@ -63,7 +64,7 @@
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
             pictureBox2.Location = new Point(-1, 0);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(435, 480);
+            pictureBox2.Size = new Size(435, 485);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 4;
             pictureBox2.TabStop = false;
@@ -79,11 +80,21 @@
             ExitBTN.UseVisualStyleBackColor = false;
             ExitBTN.Click += ExitBTN_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(63, 333);
+            label1.Name = "label1";
+            label1.Size = new Size(46, 23);
+            label1.TabIndex = 7;
+            label1.Text = "label1";
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(433, 477);
+            Controls.Add(label1);
             Controls.Add(ExitBTN);
             Controls.Add(welcomeLabel);
             Controls.Add(newBlankPageBTN);
@@ -105,5 +116,6 @@
         private Label welcomeLabel;
         private PictureBox pictureBox2;
         private Button ExitBTN;
+        private Label label1;
     }
 }

@@ -24,6 +24,7 @@
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
             pencilButton = new ToolStripButton();
@@ -42,7 +43,9 @@
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
+            errorProvider1 = new ErrorProvider(components);
             toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // toolStrip1
@@ -170,6 +173,10 @@
             drawingPanel.Size = new Size(1350, 687);
             drawingPanel.TabIndex = 1;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -177,15 +184,19 @@
             ClientSize = new Size(1350, 722);
             Controls.Add(drawingPanel);
             Controls.Add(toolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Ingyenes Paint";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         private ToolStripButton undoButton;
         private ToolStripButton redoButton;
+        private ErrorProvider errorProvider1;
+        private System.ComponentModel.IContainer components;
     }
 }
