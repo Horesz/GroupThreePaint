@@ -72,16 +72,22 @@ namespace GroupThreePaint
         private void RectangleButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Rectangle;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void EllipseButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Ellipse;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void FillButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Fill;
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void ColorButton_Click(object sender, EventArgs e)
@@ -90,6 +96,8 @@ namespace GroupThreePaint
             {
                 currentColor = colorDialog.Color; // Set the selected color
             }
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void BrushSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -104,6 +112,8 @@ namespace GroupThreePaint
             {
                 drawingBitmap.Save(saveFileDialog.FileName);
             }
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void OpenButton_Click(object sender, EventArgs e)
@@ -117,6 +127,8 @@ namespace GroupThreePaint
                 }
                 drawingPanel.Invalidate();
             }
+            eraserSelected = false;
+            drawingPanel.Invalidate();
         }
 
         private void DrawingPanel_MouseDown(object sender, MouseEventArgs e)
