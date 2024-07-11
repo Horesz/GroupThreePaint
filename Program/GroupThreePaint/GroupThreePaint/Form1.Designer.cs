@@ -27,6 +27,9 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
+            toolStripButton3 = new ToolStripButton();
             watercolorButton = new ToolStripButton();
             eraserButton = new ToolStripButton();
             colorButton = new ToolStripButton();
@@ -45,9 +48,6 @@
             openFileDialog = new OpenFileDialog();
             drawingPanel = new DoubleBufferedPanel();
             errorProvider1 = new ErrorProvider(components);
-            toolStripButton1 = new ToolStripButton();
-            toolStripButton2 = new ToolStripButton();
-            toolStripButton3 = new ToolStripButton();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
@@ -61,6 +61,33 @@
             toolStrip1.Size = new Size(1350, 35);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(32, 32);
+            toolStripButton1.Text = "Pencil";
+            toolStripButton1.Click += PencilButton_Click;
+            // 
+            // toolStripButton2
+            // 
+            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(32, 32);
+            toolStripButton2.Text = "Pen";
+            toolStripButton2.Click += PenButton_Click;
+            // 
+            // toolStripButton3
+            // 
+            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton3.Image = (Image)resources.GetObject("toolStripButton3.Image");
+            toolStripButton3.Name = "toolStripButton3";
+            toolStripButton3.Size = new Size(32, 32);
+            toolStripButton3.Text = "Spray";
+            toolStripButton3.Click += SprayButton_Click;
             // 
             // watercolorButton
             // 
@@ -190,30 +217,6 @@
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
-            // 
-            // toolStripButton1
-            // 
-            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(32, 32);
-            toolStripButton1.Text = "Pencil";
-            // 
-            // toolStripButton2
-            // 
-            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
-            toolStripButton2.Name = "toolStripButton2";
-            toolStripButton2.Size = new Size(32, 32);
-            toolStripButton2.Text = "Pen";
-            // 
-            // toolStripButton3
-            // 
-            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton3.Image = (Image)resources.GetObject("toolStripButton3.Image");
-            toolStripButton3.Name = "toolStripButton3";
-            toolStripButton3.Size = new Size(32, 32);
-            toolStripButton3.Text = "Spray";
             // 
             // Form1
             // 
