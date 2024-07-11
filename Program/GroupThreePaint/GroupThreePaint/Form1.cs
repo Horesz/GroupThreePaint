@@ -113,9 +113,9 @@ namespace GroupThreePaint
             {
                 isDrawing = true;
                 startPoint = ScalePoint(e.Location);
-                lastPoint = e.Location;
-                undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
-                redoStack.Clear(); // Clear the redo stack
+                lastPoint = startPoint;
+                undoStack.Push(new Bitmap(drawingBitmap));
+                redoStack.Clear();
 
                 if (currentTool == Tool.Fill)
                 {
@@ -132,82 +132,100 @@ namespace GroupThreePaint
         {
             if (isDrawing)
             {
-                if (currentTool == Tool.Pencil)
+                Point currentPoint = ScalePoint(e.Location);
+                using (Graphics g = Graphics.FromImage(drawingBitmap))
                 {
-                    using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.Clip = new Region(new Rectangle(0, 0, drawingBitmap.Width, drawingBitmap.Height));
+
+                    if (currentTool == Tool.Pencil)
                     {
-                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                        using (Pen pen = new Pen(currentColor, currentBrushSize))
+                        {
+                            g.DrawLine(pen, lastPoint, currentPoint);
+                        }
                     }
-                }
-                else if (currentTool == Tool.Pen)
-                {
-                    using (SolidBrush brush = new SolidBrush(currentColor))
+                    else if (currentTool == Tool.Pen)
                     {
-                        // Interpoláció a pontok között
-                        float distance = Math.Max(Math.Abs(e.X - lastPoint.X), Math.Abs(e.Y - lastPoint.Y));
-                        for (float i = 0; i <= distance; i++)
+                        using (SolidBrush brush = new SolidBrush(currentColor))
+                        {
+                            float distance = (float)Math.Sqrt(Math.Pow(currentPoint.X - lastPoint.X, 2) + Math.Pow(currentPoint.Y - lastPoint.Y, 2));
+                            for (float i = 0; i <= distance; i++)
+                            {
+                                float t = i / distance;
+                                int x = (int)Math.Round(lastPoint.X + t * (currentPoint.X - lastPoint.X));
+                                int y = (int)Math.Round(lastPoint.Y + t * (currentPoint.Y - lastPoint.Y));
+                                g.FillRectangle(brush, x, y, currentBrushSize, currentBrushSize);
+                            }
+                        }
+                    }
+                    else if (currentTool == Tool.Spray)
+                    {
+                        using (SolidBrush brush = new SolidBrush(currentColor))
+                        {
+                            int sprayRadius = currentBrushSize * 2;
+                            int sprayDensity = 50;
+
+                            for (int i = 0; i < sprayDensity; i++)
+                            {
+                                double angle = random.NextDouble() * 2 * Math.PI;
+                                double radius = random.NextDouble() * sprayRadius;
+                                int x = (int)Math.Round(currentPoint.X + radius * Math.Cos(angle));
+                                int y = (int)Math.Round(currentPoint.Y + radius * Math.Sin(angle));
+                                g.FillRectangle(brush, x, y, 1, 1);
+                            }
+                        }
+                    }
+                    else if (currentTool == Tool.Watercolor)
+                    {
+                        int brushRadius = currentBrushSize * 2;
+                        int density = 30;
+                        int layers = 5;
+
+                        float distance = (float)Math.Sqrt(Math.Pow(currentPoint.X - lastPoint.X, 2) + Math.Pow(currentPoint.Y - lastPoint.Y, 2));
+                        for (float i = 0; i <= distance; i += 0.5f)
                         {
                             float t = i / distance;
-                            int x = (int)(lastPoint.X + t * (e.X - lastPoint.X));
-                            int y = (int)(lastPoint.Y + t * (e.Y - lastPoint.Y));
-                            drawingGraphics.FillRectangle(brush, x, y, currentBrushSize, currentBrushSize);
-                        }
-                    }
-                }
-                else if (currentTool == Tool.Spray)
-                {
-                    using (SolidBrush brush = new SolidBrush(currentColor))
-                    {
-                        int sprayRadius = currentBrushSize * 2; // Állítható sugárméret
-                        int sprayDensity = 50; // Pontok száma a spray-ben, állítható érték
+                            int interpolatedX = (int)Math.Round(lastPoint.X + t * (currentPoint.X - lastPoint.X));
+                            int interpolatedY = (int)Math.Round(lastPoint.Y + t * (currentPoint.Y - lastPoint.Y));
 
-                        for (int i = 0; i < sprayDensity; i++)
-                        {
-                            double angle = random.NextDouble() * 2 * Math.PI;
-                            double radius = random.NextDouble() * sprayRadius;
-                            int x = (int)(e.X + radius * Math.Cos(angle));
-                            int y = (int)(e.Y + radius * Math.Sin(angle));
-                            drawingGraphics.FillRectangle(brush, x, y, 1, 1);
-                        }
-                    }
-                }
-                else if (currentTool == Tool.Watercolor)
-                {
-                    int brushRadius = currentBrushSize * 2; // Ecset sugara
-                    int density = 30; // Az ecset pontjainak száma, állítható érték
-                    int layers = 5; // Rétegek száma a vízfesték hatás eléréséhez
-
-                    float distance = Math.Max(Math.Abs(e.X - lastPoint.X), Math.Abs(e.Y - lastPoint.Y));
-                    for (float i = 0; i <= distance; i += 0.5f) // Kis lépésekkel haladunk, hogy folytonos legyen a vonal
-                    {
-                        float t = i / distance;
-                        int interpolatedX = (int)(lastPoint.X + t * (e.X - lastPoint.X));
-                        int interpolatedY = (int)(lastPoint.Y + t * (e.Y - lastPoint.Y));
-
-                        for (int layer = 0; layer < layers; layer++)
-                        {
-                            using (SolidBrush brush = new SolidBrush(Color.FromArgb(50 / (layer + 1), currentColor)))
+                            for (int layer = 0; layer < layers; layer++)
                             {
-                                for (int j = 0; j < density; j++)
+                                using (SolidBrush brush = new SolidBrush(Color.FromArgb(50 / (layer + 1), currentColor)))
                                 {
-                                    double angle = random.NextDouble() * 2 * Math.PI;
-                                    double radius = random.NextDouble() * brushRadius;
-                                    int x = (int)(interpolatedX + radius * Math.Cos(angle));
-                                    int y = (int)(interpolatedY + radius * Math.Sin(angle));
-                                    drawingGraphics.FillEllipse(brush, x, y, 4, 3);
+                                    for (int j = 0; j < density; j++)
+                                    {
+                                        double angle = random.NextDouble() * 2 * Math.PI;
+                                        double radius = random.NextDouble() * brushRadius;
+                                        int x = (int)Math.Round(interpolatedX + radius * Math.Cos(angle));
+                                        int y = (int)Math.Round(interpolatedY + radius * Math.Sin(angle));
+
+                                        // Ensure x and y are within the bitmap's boundaries
+                                        x = Math.Max(0, Math.Min(x, drawingBitmap.Width - 1));
+                                        y = Math.Max(0, Math.Min(y, drawingBitmap.Height - 1));
+
+                                        // Ensure the ellipse doesn't exceed the bitmap's boundaries
+                                        int width = Math.Min(4, drawingBitmap.Width - x);
+                                        int height = Math.Min(3, drawingBitmap.Height - y);
+
+                                        if (width > 0 && height > 0)
+                                        {
+                                            g.FillEllipse(brush, x, y, width, height);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else if (currentTool == Tool.Eraser)
-                {
-                    using (Pen pen = new Pen(Color.White, currentBrushSize * 5)) // Adjust the eraser size
+                    else if (currentTool == Tool.Eraser)
                     {
-                        drawingGraphics.DrawLine(pen, lastPoint, e.Location);
+                        using (Pen pen = new Pen(Color.White, currentBrushSize * 5))
+                        {
+                            g.DrawLine(pen, lastPoint, currentPoint);
+                        }
                     }
                 }
-                lastPoint = e.Location;
+                lastPoint = currentPoint;
                 drawingPanel.Invalidate();
             }
         }
@@ -220,18 +238,19 @@ namespace GroupThreePaint
 
                 if (currentTool == Tool.Rectangle || currentTool == Tool.Ellipse)
                 {
-                    var endPoint = e.Location;
+                    Point endPoint = ScalePoint(e.Location);
                     var rect = GetRectangle(startPoint, endPoint);
 
+                    using (Graphics g = Graphics.FromImage(drawingBitmap))
                     using (Pen pen = new Pen(currentColor, currentBrushSize))
                     {
                         if (currentTool == Tool.Rectangle)
                         {
-                            drawingGraphics.DrawRectangle(pen, rect);
+                            g.DrawRectangle(pen, rect);
                         }
                         else if (currentTool == Tool.Ellipse)
                         {
-                            drawingGraphics.DrawEllipse(pen, rect);
+                            g.DrawEllipse(pen, rect);
                         }
                     }
 
@@ -242,11 +261,15 @@ namespace GroupThreePaint
 
         private Point ScalePoint(Point p)
         {
-            return new Point((int)(p.X / zoomFactor), (int)(p.Y / zoomFactor));
+            return new Point(
+                (int)((p.X - drawingPanel.AutoScrollPosition.X) / zoomFactor),
+                (int)((p.Y - drawingPanel.AutoScrollPosition.Y) / zoomFactor)
+            );
         }
 
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.TranslateTransform(drawingPanel.AutoScrollPosition.X, drawingPanel.AutoScrollPosition.Y);
             e.Graphics.ScaleTransform(zoomFactor, zoomFactor);
             e.Graphics.DrawImage(drawingBitmap, Point.Empty);
         }
