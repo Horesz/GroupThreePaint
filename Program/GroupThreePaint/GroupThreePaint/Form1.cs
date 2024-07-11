@@ -1,9 +1,16 @@
-using System;
-
 namespace GroupThreePaint
 {
     public partial class Form1 : Form
     {
+        private enum Tool
+        {
+            Pencil,
+            Eraser,
+            Rectangle,
+            Ellipse,
+            Fill
+        }
+
         private bool isDrawing = false;
         private Point lastPoint;
         private Point startPoint; // For shapes
@@ -36,21 +43,6 @@ namespace GroupThreePaint
             currentTool = Tool.Pencil;
         }
 
-        private void PenButton_Click(object sender, EventArgs e)
-        {
-            currentTool = Tool.Pen;
-        }
-
-        private void SprayButton_Click(object sender, EventArgs e)
-        {
-            currentTool = Tool.Spray;
-        }
-
-        private void WatercolorButton_Click(object sender, EventArgs e)
-        {
-            currentTool = Tool.Watercolor;
-        }
-
         private void EraserButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Eraser;
@@ -64,6 +56,11 @@ namespace GroupThreePaint
         private void EllipseButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Ellipse;
+        }
+
+        private void FillButton_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.Fill;
         }
 
         private void ColorButton_Click(object sender, EventArgs e)
@@ -110,10 +107,17 @@ namespace GroupThreePaint
                 lastPoint = e.Location;
                 undoStack.Push(new Bitmap(drawingBitmap)); // Save the current state for undo
                 redoStack.Clear(); // Clear the redo stack
+
+                if (currentTool == Tool.Fill)
+                {
+                    Color targetColor = drawingBitmap.GetPixel(e.Location.X, e.Location.Y);
+                    FloodFill(e.Location, targetColor);
+                    isDrawing = false;
+                    drawingPanel.Invalidate();
+                }
             }
         }
 
-        private Random random = new Random();
         private void DrawingPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDrawing)
@@ -123,67 +127,6 @@ namespace GroupThreePaint
                     using (Pen pen = new Pen(currentColor, currentBrushSize)) // Use the selected color and brush size
                     {
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
-                    }
-                }
-                else if (currentTool == Tool.Pen)
-                {
-                    using (SolidBrush brush = new SolidBrush(currentColor))
-                    {
-                        // Interpoláció a pontok között
-                        float distance = Math.Max(Math.Abs(e.X - lastPoint.X), Math.Abs(e.Y - lastPoint.Y));
-                        for (float i = 0; i <= distance; i++)
-                        {
-                            float t = i / distance;
-                            int x = (int)(lastPoint.X + t * (e.X - lastPoint.X));
-                            int y = (int)(lastPoint.Y + t * (e.Y - lastPoint.Y));
-                            drawingGraphics.FillRectangle(brush, x, y, currentBrushSize, currentBrushSize);
-                        }
-                    }
-                }
-                else if (currentTool == Tool.Spray)
-                {
-                    using (SolidBrush brush = new SolidBrush(currentColor))
-                    {
-                        int sprayRadius = currentBrushSize * 2; // Állítható sugárméret
-                        int sprayDensity = 50; // Pontok száma a spray-ben, állítható érték
-
-                        for (int i = 0; i < sprayDensity; i++)
-                        {
-                            double angle = random.NextDouble() * 2 * Math.PI;
-                            double radius = random.NextDouble() * sprayRadius;
-                            int x = (int)(e.X + radius * Math.Cos(angle));
-                            int y = (int)(e.Y + radius * Math.Sin(angle));
-                            drawingGraphics.FillRectangle(brush, x, y, 1, 1);
-                        }
-                    }
-                }
-                else if (currentTool == Tool.Watercolor)
-                {
-                    int brushRadius = currentBrushSize * 2; // Ecset sugara
-                    int density = 30; // Az ecset pontjainak száma, állítható érték
-                    int layers = 5; // Rétegek száma a vízfesték hatás eléréséhez
-
-                    float distance = Math.Max(Math.Abs(e.X - lastPoint.X), Math.Abs(e.Y - lastPoint.Y));
-                    for (float i = 0; i <= distance; i += 0.5f) // Kis lépésekkel haladunk, hogy folytonos legyen a vonal
-                    {
-                        float t = i / distance;
-                        int interpolatedX = (int)(lastPoint.X + t * (e.X - lastPoint.X));
-                        int interpolatedY = (int)(lastPoint.Y + t * (e.Y - lastPoint.Y));
-
-                        for (int layer = 0; layer < layers; layer++)
-                        {
-                            using (SolidBrush brush = new SolidBrush(Color.FromArgb(50 / (layer + 1), currentColor)))
-                            {
-                                for (int j = 0; j < density; j++)
-                                {
-                                    double angle = random.NextDouble() * 2 * Math.PI;
-                                    double radius = random.NextDouble() * brushRadius;
-                                    int x = (int)(interpolatedX + radius * Math.Cos(angle));
-                                    int y = (int)(interpolatedY + radius * Math.Sin(angle));
-                                    drawingGraphics.FillEllipse(brush, x, y, 4, 3);
-                                }
-                            }
-                        }
                     }
                 }
                 else if (currentTool == Tool.Eraser)
@@ -294,6 +237,58 @@ namespace GroupThreePaint
             redoStack.Clear(); // Clear the redo stack
             drawingGraphics.Clear(Color.White); // Clear the drawing area
             drawingPanel.Invalidate();
+        }
+
+        private void FloodFill(Point pt, Color targetColor)
+        {
+            Color replacementColor = currentColor;
+            if (targetColor == replacementColor)
+                return;
+
+            Queue<Point> pixels = new Queue<Point>();
+            pixels.Enqueue(pt);
+
+            while (pixels.Count > 0)
+            {
+                Point temp = pixels.Dequeue();
+                int y1 = temp.Y;
+
+                while (y1 >= 0 && drawingBitmap.GetPixel(temp.X, y1) == targetColor)
+                {
+                    y1--;
+                }
+
+                y1++;
+                bool spanLeft = false;
+                bool spanRight = false;
+
+                while (y1 < drawingBitmap.Height && drawingBitmap.GetPixel(temp.X, y1) == targetColor)
+                {
+                    drawingBitmap.SetPixel(temp.X, y1, replacementColor);
+
+                    if (!spanLeft && temp.X > 0 && drawingBitmap.GetPixel(temp.X - 1, y1) == targetColor)
+                    {
+                        pixels.Enqueue(new Point(temp.X - 1, y1));
+                        spanLeft = true;
+                    }
+                    else if (spanLeft && temp.X - 1 >= 0 && drawingBitmap.GetPixel(temp.X - 1, y1) != targetColor)
+                    {
+                        spanLeft = false;
+                    }
+
+                    if (!spanRight && temp.X < drawingBitmap.Width - 1 && drawingBitmap.GetPixel(temp.X + 1, y1) == targetColor)
+                    {
+                        pixels.Enqueue(new Point(temp.X + 1, y1));
+                        spanRight = true;
+                    }
+                    else if (spanRight && temp.X < drawingBitmap.Width - 1 && drawingBitmap.GetPixel(temp.X + 1, y1) != targetColor)
+                    {
+                        spanRight = false;
+                    }
+
+                    y1++;
+                }
+            }
         }
     }
 }
