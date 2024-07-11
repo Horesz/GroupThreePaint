@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Dana\\EgyetemXd\\szakmagyak\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj": {}
+    "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj": {}
   },
   "projects": {
-    "D:\\Dana\\EgyetemXd\\szakmagyak\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj": {
+    "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Dana\\EgyetemXd\\szakmagyak\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
+        "projectUniqueName": "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
         "projectName": "GroupThreePaint",
-        "projectPath": "D:\\Dana\\EgyetemXd\\szakmagyak\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
-        "packagesPath": "C:\\Users\\Dana\\.nuget\\packages\\",
-        "outputPath": "D:\\Dana\\EgyetemXd\\szakmagyak\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\obj\\",
+        "projectPath": "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\GroupThreePaint.csproj",
+        "packagesPath": "C:\\Users\\sinka\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sinka\\OneDrive\\Dokumentumok\\GitHub\\GroupThreePaint\\Program\\GroupThreePaint\\GroupThreePaint\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Dana\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sinka\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -58,7 +63,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }

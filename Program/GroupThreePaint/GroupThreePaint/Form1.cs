@@ -15,20 +15,56 @@ namespace GroupThreePaint
         private Stack<Bitmap> redoStack = new Stack<Bitmap>(); // Redo stack
 
         private bool isDarkMode = false; // Track the current theme
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            // Create a new bitmap with the new size
+            Bitmap newBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
+            using (Graphics g = Graphics.FromImage(newBitmap))
+            {
+                g.Clear(Color.White);
+                // Draw the old bitmap onto the new one, preserving the content
+                g.DrawImage(drawingBitmap, 0, 0);
+            }
 
-        public Form1()
+            // Replace the old bitmap and graphics
+            drawingBitmap.Dispose();
+            drawingGraphics.Dispose();
+            drawingBitmap = newBitmap;
+            drawingGraphics = Graphics.FromImage(drawingBitmap);
+
+            // Redraw the panel
+            drawingPanel.Invalidate();
+        }
+        public Form1(Size? customSize = null)
         {
             InitializeComponent();
+
+            if (customSize.HasValue)
+            {
+                this.Size = customSize.Value;
+            }
+
+            // Set the drawing panel to fill the entire form
+            drawingPanel.Dock = DockStyle.Fill;
+
             drawingPanel.MouseDown += new MouseEventHandler(DrawingPanel_MouseDown);
             drawingPanel.MouseMove += new MouseEventHandler(DrawingPanel_MouseMove);
             drawingPanel.MouseUp += new MouseEventHandler(DrawingPanel_MouseUp);
             drawingPanel.Paint += new PaintEventHandler(DrawingPanel_Paint);
 
+            // Create the initial bitmap
+            CreateNewBitmap();
+
+            // Add resize event handler
+            this.Resize += new EventHandler(Form1_Resize);
+        }
+
+        private void CreateNewBitmap()
+        {
             drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
             drawingGraphics = Graphics.FromImage(drawingBitmap);
             drawingGraphics.Clear(Color.White);
         }
-
         private void PencilButton_Click(object sender, EventArgs e)
         {
             currentTool = Tool.Pencil;
@@ -67,7 +103,16 @@ namespace GroupThreePaint
             saveFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|BMP Files|*.bmp";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                drawingBitmap.Save(saveFileDialog.FileName);
+                // Create a new bitmap with the panel's size
+                using (Bitmap saveBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height))
+                {
+                    // Draw the current bitmap onto the new one, stretching it to fit
+                    using (Graphics g = Graphics.FromImage(saveBitmap))
+                    {
+                        g.DrawImage(drawingBitmap, 0, 0, drawingPanel.Width, drawingPanel.Height);
+                    }
+                    saveBitmap.Save(saveFileDialog.FileName);
+                }
             }
         }
 
@@ -78,7 +123,9 @@ namespace GroupThreePaint
             {
                 using (Bitmap openedBitmap = new Bitmap(openFileDialog.FileName))
                 {
-                    drawingGraphics.DrawImage(openedBitmap, Point.Empty);
+                    drawingBitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
+                    drawingGraphics = Graphics.FromImage(drawingBitmap);
+                    drawingGraphics.DrawImage(openedBitmap, 0, 0, drawingPanel.Width, drawingPanel.Height);
                 }
                 drawingPanel.Invalidate();
             }
